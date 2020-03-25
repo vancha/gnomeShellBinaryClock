@@ -7,7 +7,7 @@ const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 
 
-let button,binaryCalc,dateMenu,updateClockId,tz,date,strHour,strMinute,strSeconds,context,size,width,height,arcwidth,archeight,radius,spacing,repaintConnection,boxlayout,displaySeconds, oldClock;
+let button,binaryCalc,dateMenu,updateClockId,tz,date,strHour,strMinute,context,size,width,height,arcwidth,archeight,radius,spacing,repaintConnection,boxlayout,displaySeconds, oldClock;
 
 function _triggerRepaint() {
     binaryCalc.queue_repaint()
@@ -68,7 +68,6 @@ function _repaintevent(stdrawingarea,user_data) {
       date = GLib.DateTime.new_now(tz);
       strHour = date.get_hour();
       strMinute = date.get_minute();
-      strSeconds = date.get_second();
       
       context = stdrawingarea.get_context();
       size = stdrawingarea.get_surface_size();
@@ -148,44 +147,6 @@ function _repaintevent(stdrawingarea,user_data) {
             context.fill();
           }
           i++;
-      }
-      
-      
-      if(displaySeconds) 
-      {
-         digit = _getBinary(parseInt(_doubleDigitTime(strSeconds).charAt(0)));
-         i = 0;
-          for(var x in digit)
-          {
-              if(digit[x] == 1) {
-              context.setSourceRGB(1,1,1);
-              context.arc(radius + arcwidth * 4+ spacing+ spacing+ spacing+ spacing, (i*archeight) + radius, radius, 0, 4 * Math.PI);
-              context.fill();
-              context.setSourceRGB(.6,.6,.6);
-              }
-              else {
-                context.arc(radius + arcwidth * 4+ spacing+ spacing+ spacing+ spacing, (i*archeight) + radius, radius, 0, 4 * Math.PI);
-                context.fill();
-              }
-              i++;
-          }
-        
-        digit = _getBinary(parseInt(_doubleDigitTime(strSeconds).charAt(1)));
-        i = 0;
-        for(var x in digit)
-        {
-            if(digit[x] == 1) {
-            context.setSourceRGB(1,1,1);
-            context.arc(radius + arcwidth * 5+ spacing+ spacing+ spacing+ spacing+ spacing, (i * archeight) + radius, radius, 0, 4 * Math.PI);
-            context.fill();
-            context.setSourceRGB(.6,.6,.6);
-            }
-            else {
-              context.arc(radius + arcwidth * 5+ spacing+ spacing+ spacing+ spacing+ spacing, (i * archeight) + radius, radius, 0, 4 * Math.PI);
-              context.fill();
-            }
-            i++;
-        }
       }
       context.$dispose();
 }
